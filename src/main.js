@@ -8,7 +8,7 @@ function calculateSimpleRevenue(purchase, _product) {
     const { discount, sale_price, quantity } = purchase;
     const discountDecimal = discount ? discount / 100 : 0;
     const revenue = sale_price * quantity * (1 - discountDecimal);
-    return Math.round(revenue * 100) / 100;
+    return parseFloat(revenue);
 }
 
 /**
@@ -25,7 +25,7 @@ function calculateBonusByProfit(index, total, seller) {
     else if (index === total - 1) bonus = 0;
     else bonus = seller.profit * 0.05;
     
-    return Math.round(bonus * 100) / 100;
+   return parseFloat(bonus.toFixed(2));
 }
 
 /**
