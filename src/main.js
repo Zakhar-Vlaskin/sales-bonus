@@ -25,12 +25,19 @@ function calculateSimpleRevenue(purchase, _product) {
  * @param seller карточка продавца
  * @returns {number}
  */
+// Исправленная функция calculateBonusByProfit
 function calculateBonusByProfit(index, total, seller) {
-    // Рассчитываем бонус как процент от прибыли продавца
-    if(index === 1) return seller.profit * 0.15; // 15% для первого места
-    if(index === 2 || index === 3) return seller.profit * 0.10; // 10% для 2-3 мест
-    if(index === total) return 0; // 0% для последнего места
-    return seller.profit * 0.05; // 5% для всех остальных (включая предпоследнее)
+    if (!seller || typeof seller.profit !== 'number') {
+        throw new Error('Invalid seller object or missing profit');
+    }
+
+    // Нормализуем индекс (тесты используют 0-based индексы)
+    const position = index + 1;
+    
+    if (position === 1) return seller.profit * 0.15; // 15% для первого
+    if (position === 2 || position === 3) return seller.profit * 0.10; // 10% для 2-3
+    if (position === total) return 0; // 0% для последнего
+    return seller.profit * 0.05; // 5% для остальных
 }
 
 /**
@@ -43,12 +50,14 @@ function analyzeSalesData(data, options) {
 
     // @TODO: Проверка входных данных
 
-    if(!Array.isArray(data)){
+    // Проверка входных данных
+    if (!Array.isArray(data)) {
         throw new Error('Data should be an array');
     }
-
-    if (typeof options !== 'object' || options === null) {
-        throw new Error('Options should be an object');
+    
+    if (!options || typeof options.calculateSimpleRevenue !== 'function' || 
+        typeof options.calculateBonusByProfit !== 'function') {
+        throw new Error('Invalid options');
     }
 
     // @TODO: Проверка наличия опций
