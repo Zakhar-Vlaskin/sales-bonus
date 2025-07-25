@@ -30,9 +30,9 @@ function calculateBonusByProfit(index, total, seller) {
     
 
     
-        if(index===0) return 15;
-        if(index === 1 || index === 2) return 10;
-        if(index === total - 1) return 0;
+        if(index===1) return 15;
+        if(index === 2 || index === 3) return 10;
+        if(index === total) return 0;
         return 5;
     
 
